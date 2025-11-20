@@ -5,11 +5,9 @@ import com.devtiro.tasks.domain.dto.TaskListDto;
 import com.devtiro.tasks.domain.entities.TaskList;
 import com.devtiro.tasks.mappers.TaskListMapper;
 import com.devtiro.tasks.services.TaskListService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -45,6 +43,16 @@ public class TaskListController {
         return taskListMapper.toTaskListDto(taskList);
     }
 
+    @PutMapping("/{id}")
+    public TaskListDto updateTaskListById(@PathVariable("id") UUID taskListId , @RequestBody TaskListDto taskListDto) {
+       TaskList updatedTaskList = taskListService.updateTaskList(taskListId, taskListMapper.fromTaskListDto(taskListDto));
+       return taskListMapper.toTaskListDto(updatedTaskList);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTaskListById(@PathVariable("id") UUID taskListId) {
+        taskListService.deleteTaskList(taskListId);
+    }
 
 
 }
