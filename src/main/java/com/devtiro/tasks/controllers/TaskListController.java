@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/task-lists")
@@ -35,4 +37,14 @@ public class TaskListController {
         TaskList createdTaskList = taskListService.craeteTaskList(taskListMapper.fromTaskListDto(taskListDto));
         return taskListMapper.toTaskListDto(createdTaskList);
     }
+
+    @GetMapping("/{id}")
+    public  TaskListDto getTaskListById(@PathVariable("id") UUID taskListId) {
+        TaskList taskList = taskListService.getTaskListById(taskListId)
+                .orElseThrow( () -> new IllegalArgumentException( "TaskList not found with id " + taskListId));
+        return taskListMapper.toTaskListDto(taskList);
+    }
+
+
+
 }
