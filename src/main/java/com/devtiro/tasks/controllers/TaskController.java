@@ -6,10 +6,7 @@ import com.devtiro.tasks.domain.entities.Task;
 import com.devtiro.tasks.mappers.TaskMapper;
 import com.devtiro.tasks.services.TaskService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +29,14 @@ public class TaskController {
                 .map(taskMapper::fromTask)
                 .toList();
         return taskDtos;
+    }
+
+    @PostMapping
+    public TaskDto createTask(@PathVariable("task-list-id") UUID taskListId ,  @RequestBody TaskDto task) {
+
+        Task createdTask = taskService.createTask( taskListId, taskMapper.fromDto(task));
+        return taskMapper.fromTask(createdTask);
+
     }
 
 
