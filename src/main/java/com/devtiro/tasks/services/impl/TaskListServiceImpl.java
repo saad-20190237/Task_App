@@ -1,5 +1,6 @@
 package com.devtiro.tasks.services.impl;
 
+import com.devtiro.tasks.domain.entities.Task;
 import com.devtiro.tasks.domain.entities.TaskList;
 import com.devtiro.tasks.repos.TaskListRepo;
 import com.devtiro.tasks.services.TaskListService;
@@ -30,21 +31,19 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public TaskList craeteTaskList(TaskList taskList) {
+        //validations
         if (taskList.getId() != null) {
             throw new IllegalArgumentException("Task List already has an id!!");
         } else if (taskList.getTitle() == null || taskList.getTitle().isBlank()) {
             throw new IllegalArgumentException("Task List title is blank!!");
         }
-        LocalDate today = LocalDate.now();
-        return taskListRepo.save(new TaskList(
-                null,
-                taskList.getTitle(),
-                taskList.getDescription(),
-                null,
-                today,
-                today
 
-        ));
+        LocalDate today = LocalDate.now();
+
+        taskList.setCreationDate(today);
+        taskList.setUpdateDate(today);
+
+       return taskListRepo.save(taskList);
 
 
     }

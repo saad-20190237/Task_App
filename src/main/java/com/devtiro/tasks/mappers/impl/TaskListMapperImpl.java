@@ -24,24 +24,25 @@ public class TaskListMapperImpl implements TaskListMapper {
     @Override
     public TaskList fromTaskListDto(TaskListDto taskListDto) {
 
-        List<Task> tasks = taskListDto.tasks() == null
-                ? List.of()
-                : taskListDto.tasks()
-                .stream()
-                .map(taskMapper::fromDto)
-                .toList();
+        TaskList taskList = new TaskList();
 
+        taskList.setId(null);
 
+        taskList.setDescription(taskListDto.description());
+        taskList.setTitle(taskListDto.title());
 
-        return new TaskList(
-                taskListDto.id(),
-                taskListDto.title(),
-                taskListDto.description(),
-                tasks,
-                null,
-                null
+        taskList.setTasks(new ArrayList<>());
 
-        );
+        if (taskListDto.tasks() != null) {
+            for (TaskDto taskDto : taskListDto.tasks()) {
+                Task task = taskMapper.fromDto(taskDto);
+
+                task.setId(null);
+                taskList.addTask(task);
+
+            }
+        }
+        return taskList;
     }
 
     @Override

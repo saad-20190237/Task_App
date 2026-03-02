@@ -31,8 +31,8 @@ public class TaskListController {
     }
 
     @PostMapping
-    public TaskListDto createTaskList(@RequestBody TaskListDto taskListDto) {
-        TaskList createdTaskList = taskListService.craeteTaskList(taskListMapper.fromTaskListDto(taskListDto));
+    public TaskListDto createTaskList(@RequestBody TaskListDto requestDto) {
+        TaskList createdTaskList = taskListService.craeteTaskList(taskListMapper.fromTaskListDto(requestDto));
         return taskListMapper.toTaskListDto(createdTaskList);
     }
 

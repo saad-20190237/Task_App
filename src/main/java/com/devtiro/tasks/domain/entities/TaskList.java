@@ -35,4 +35,12 @@ public class TaskList {
     private LocalDate creationDate;
 
     private LocalDate updateDate;
+
+    public void addTask(Task task) {
+        if (this.tasks == null) {
+            this.tasks = new ArrayList<>();
+        }
+        this.tasks.add(task);
+        task.setTaskList(this);
+    }
 }

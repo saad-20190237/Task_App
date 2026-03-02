@@ -16,14 +16,26 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
+//
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(request-> request.anyRequest().authenticated())
+//                .httpBasic(Customizer.withDefaults())
+//                .authenticationProvider(authenticationProvider);
+//
+//        return http.build();
+//    }
 
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request-> request.anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .authenticationProvider(authenticationProvider);
+                .csrf(csrf -> csrf.disable()) // عشان POST من Postman من غير CSRF token
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll()  // افتح الـ API كلها
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
     }
